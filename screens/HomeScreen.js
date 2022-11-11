@@ -1,6 +1,7 @@
 import React,{createRef} from 'react'
 import {TextInput,Text,View,TouchableOpacity,StyleSheet, ActivityIndicator} from "react-native"
 import axios from 'axios'
+import {API_URL} from '@env'
 
 export default class Home extends React.Component{
     constructor(props){
@@ -17,7 +18,7 @@ export default class Home extends React.Component{
  
     findID=async()=>{
         this.setState({loader:true})
-        await axios.get("https://api.nasa.gov/neo/rest/v1/neo/browse?api_key=YyBcj1zKd7wHfEdoef7t97ZmUTp2g8eDS5eGKip4")
+        await axios.get(API_URL)
         .then((response) => {this.setState({details:[...this.state.details,response.data.near_earth_objects]})}).catch((e)=>{alert(e)})
            
             setTimeout(()=>{this.setState({loader:false})},1000)
@@ -43,7 +44,7 @@ export default class Home extends React.Component{
 
     findRandomId=async()=>{
         this.setState({loader:true})
-        await axios.get("https://api.nasa.gov/neo/rest/v1/neo/browse?api_key=YyBcj1zKd7wHfEdoef7t97ZmUTp2g8eDS5eGKip4")
+        await axios.get(API_URL)
         .then((response) => {
             this.setState({details:[...this.state.details,response.data.near_earth_objects]})}).catch((e)=>{alert(e)})
         setTimeout(()=>{this.setState({loader:false})},1000)
