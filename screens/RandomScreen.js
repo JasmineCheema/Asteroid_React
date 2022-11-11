@@ -6,24 +6,18 @@ export default class RandomScreen extends React.Component{
     constructor(props){
         super(props)
         this.state={
+            data:this.props.route.params.obj2,
             name:"",
             id:"",
             designation:""
         }
     }
     componentDidMount=async()=>{
-        //let today = new Date().toISOString().slice(0, 10)
-        const id = await this.props.route.params.obj2;  
-        for(var i in id)
-        {
             this.setState({
-                name:id[i].name,
-                id:id[i].id,
-                designation:id[i].designation
+                name:this.state.data.name,
+                id:this.state.data.id,
+                designation:this.state.data.designation
             })
-        }
-            
-       
     }
     render(){
       

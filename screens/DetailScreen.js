@@ -6,24 +6,21 @@ export default class Details extends React.Component{
     constructor(props){
         super(props)
         this.state={
+            data:this.props.route.params.obj1,
             name:"",
             id:"",
             designation:""
         }
     }
-    componentDidMount(){
-        
-        const id =this.props.route.params.obj1;  
-        for(var i in id)
-        {
-            console.log(id[i])
+    componentDidMount=async()=>{
+       console.log(this.state.data.id,"HEYYYYY")
+     
             this.setState({
-                name:id[i].name,
-                id:id[i].id,
-                designation:id[i].designation
+                name:this.state.data.name,
+                id:this.state.data.id,
+                designation:this.state.data.designation
             })
-        }
-       
+      
     }
     render(){
         

@@ -11,55 +11,45 @@ export default class Home extends React.Component{
             dataIDDetails:[],
             randomDetails:[],
             loader:false ,
-            notFound:0   
         }
 
     }
-    
-    componentDidMount=async()=>{
-        const details1=await axios.get("https://api.nasa.gov/neo/rest/v1/neo/browse?api_key=YyBcj1zKd7wHfEdoef7t97ZmUTp2g8eDS5eGKip4")
-        .then((response) => {
-            this.setState({details:[...this.state.details,response.data.near_earth_objects]})}).catch((e)=>{alert(e)})
-    }
  
     findID=async()=>{
-            this.setState({loader:true})
-            const enteredId=this.state.data
-            const dataId=this.state.details
-            const item=  this.state.details.map((data)=>{ 
+        this.setState({loader:true})
+        await axios.get("https://api.nasa.gov/neo/rest/v1/neo/browse?api_key=YyBcj1zKd7wHfEdoef7t97ZmUTp2g8eDS5eGKip4")
+        .then((response) => {this.setState({details:[...this.state.details,response.data.near_earth_objects]})}).catch((e)=>{alert(e)})
            
-            for(var i=0;i<data.length;i++){
-                if(data[i].id===enteredId)
-                {
-                
-                 this.setState({dataIDDetails:[...this.state.dataIDDetails,data[i]]})
-                 setTimeout(()=>{this.props.navigation.navigate("Details",{obj1:this.state.dataIDDetails})},6000)
-                 
-                }
+            setTimeout(()=>{this.setState({loader:false})},1000)
+            var count=0
+            this.state.details.map((data,index)=>{ 
+            if(data[index].id===this.state.data){
+                //this.setState(prev=>({dataIDDetails:[...prev.dataIDDetails,data[index]]}))
+                setTimeout(()=>{this.props.navigation.navigate("Details",{obj1:data[index]})},1200)
+                count=1
             }
-            
-            setTimeout(()=>{
-                if(this.state.dataIDDetails.length===0){
-                alert('wrong id')
-               }},5000)
-           
-         })
-        
+            })
+            if(count===1){
+                console.log("Found")
+            }
+            else{
+                setTimeout(()=>{alert("WRONG ID")},1000)
+            }
+            this.setState({
+                data:""
+            })
+       
     }
+
     findRandomId=async()=>{
         this.setState({loader:true})
-        const r1=Math.round(Math.random()*19)
-        this.state.details.map((data)=>{
-            for(var i=0;i<data.length;i++){
-                if(data[i].id===data[r1].id)
-                {
-                
-                 this.setState({randomDetails:[...this.state.randomDetails,data[i]]})
-                 console.log("HELLLOOO"+data[r1].id)
-                 setTimeout(()=>{this.props.navigation.navigate("Random",{obj2:this.state.randomDetails})},6000)
-                
-                }
-            }
+        await axios.get("https://api.nasa.gov/neo/rest/v1/neo/browse?api_key=YyBcj1zKd7wHfEdoef7t97ZmUTp2g8eDS5eGKip4")
+        .then((response) => {
+            this.setState({details:[...this.state.details,response.data.near_earth_objects]})}).catch((e)=>{alert(e)})
+        setTimeout(()=>{this.setState({loader:false})},1000)
+        this.state.details.map((data,index)=>{
+           const r1=Math.round(Math.random()*19)
+            this.props.navigation.navigate("Random",{obj2:data[r1]})
         })
        
     }
@@ -94,29 +84,14 @@ export default class Home extends React.Component{
                         alert("YOU MUST ENTER ID")
                     }
                     else{
-                       
                     this.findID()
-                    setTimeout(()=>{
-                        this.setState({
-                        loader:false,
-                        
-                    })
-                    
-                },5700)
-                    setTimeout(()=>{this.setState({dataIDDetails:[]})
-                    },6500)
-                        
                     } 
                 }}>
                     <Text style={styles.textStyles}>SEARCH</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonStyle}
                 onPress={()=>{
-             
                this.findRandomId()
-             
-               setTimeout(()=>{this.setState({loader:false})},5700)
-                
                 }}>
                     <Text style={styles.textStyles}>RANDOM</Text>
                 </TouchableOpacity>
