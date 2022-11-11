@@ -7,29 +7,18 @@ export default class Details extends React.Component{
         super(props)
         this.state={
             data:this.props.route.params.obj1,
-            name:"",
-            id:"",
-            designation:""
         }
     }
-    componentDidMount=async()=>{
-       console.log(this.state.data.id,"HEYYYYY")
-     
-            this.setState({
-                name:this.state.data.name,
-                id:this.state.data.id,
-                designation:this.state.data.designation
-            })
-      
-    }
+  
+    
     render(){
-        
+      const {id,name,designation}=this.state.data
         return(
             <View style={styles.container}>
                     <View style={styles.dataContainer}>
-                   <Text style={styles.textStyles}>ID:{this.state.id}</Text>
-                   <Text style={styles.textStyles}>Name:{this.state.name}</Text>
-                   <Text style={styles.textStyles}>Designation: {this.state.designation}</Text>
+                   <Text style={styles.textStyles}>ID:{id}</Text>
+                   <Text style={styles.textStyles}>Name:{name}</Text>
+                   <Text style={styles.textStyles}>Designation: {designation}</Text>
                    </View>
                    
                

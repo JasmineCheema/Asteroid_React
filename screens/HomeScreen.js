@@ -46,23 +46,29 @@ export default class Home extends React.Component{
         this.setState({loader:true})
         await axios.get(API_URL)
         .then((response) => {
-            this.setState({details:[...this.state.details,response.data.near_earth_objects]})}).catch((e)=>{alert(e)})
+            this.setState({details:response.data.near_earth_objects})}).catch((e)=>{alert(e)})
         setTimeout(()=>{this.setState({loader:false})},1000)
-        this.state.details.map((data,index)=>{
+        console.log(this.state.details)
+        /*this.state.details.map((data,index)=>{
+            //console.log(data)
            const r1=Math.round(Math.random()*19)
             this.props.navigation.navigate("Random",{obj2:data[r1]})
-        })
+        })*/
+        const r1 = Math.round(Math.random() *this.state.details.length); 
+        this.props.navigation.navigate("Random", { obj2: this.state.details[r1] });
        
     }
   
     render(){
-        const ref1=createRef()
+        //const ref1=createRef()
+
         return(
             <View style={styles.container}>
                 <View style={styles.subContainer}>
                    
                 <TextInput
-                ref={ref1}
+                //ref={ref1}
+                value={this.state.data}
                 style={{
                     width:200,
                     height:40,
@@ -80,8 +86,8 @@ export default class Home extends React.Component{
                 keyboardType='numeric'/>
                 <TouchableOpacity style={styles.buttonStyle}
                 onPress={()=>{
-                    ref1.current.clear()
-                    if(this.state.data===""){
+                    //ref1.current.clear()
+                    if(this.state.data.trim()===""){
                         alert("YOU MUST ENTER ID")
                     }
                     else{
